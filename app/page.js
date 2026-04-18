@@ -424,53 +424,32 @@ export default function Home() {
           {/* ═══ STEP 0 : Form ═══════════════════════════════════════════════ */}
           {step === 0 && (
             <form onSubmit={sendOtp} noValidate>
-              <Field label="Full Name *" placeholder="e.g. Rahul Sharma"
-                value={form.name} onChange={set('name')} autoComplete="name" />
-              <Field label="Contact Number *" placeholder="10-digit mobile number"
-                value={form.contact} onChange={set('contact')} maxLength={10}
-                inputMode="numeric" type="tel" autoComplete="tel" />
-              <Field label="Alternate Contact" placeholder="Optional"
-                value={form.altContact} onChange={set('altContact')} maxLength={10}
-                inputMode="numeric" type="tel" />
+
+              <Field label="Full Name *" value={form.name} onChange={set('name')} />
+              <Field label="Contact Number *" value={form.contact} onChange={set('contact')} />
+              <Field label="Alternate Contact" value={form.altContact} onChange={set('altContact')} />
+
               <Field label="Father Name *" value={form.fatherName} onChange={set('fatherName')} />
               <Field label="Father Contact *" value={form.fatherContact} onChange={set('fatherContact')} />
               <Field label="Address *" value={form.permanant_address} onChange={set('permanant_address')} />
               <Field label="Counselor Name *" value={form.counslerName} onChange={set('counslerName')} />
+
+              {/* Entrance Test */}
               <div style={{ marginBottom: 24 }}>
-                <label style={{
-                  display: 'block',
-                  fontSize: 11,
-                  fontWeight: 600,
-                  letterSpacing: '0.12em',
-                  textTransform: 'uppercase',
-                  color: '#5a5a7a',
-                  marginBottom: 10,
-                  fontFamily: 'var(--font-mono)',
-                }}>
-                  Entrance Test *
-                </label>
+                <label style={labelStyle}>Entrance Test *</label>
 
                 <div className="type-grid" style={{ flexWrap: 'wrap' }}>
                   {[
-                    'CET',
-                    'CUET',
-                    'NIMCET',
-                    'JEE Mains',
-                    'GATE',
-                    'CMAT - 2026',
-                    'CAT - 2025'
+                    'CET', 'CUET', 'NIMCET', 'JEE Mains',
+                    'GATE', 'CMAT - 2026', 'CAT - 2025'
                   ].map((test) => (
-                    <label
-                      key={test}
-                      className="type-option"
+                    <label key={test} className="type-option"
                       style={{
                         border: `2px solid ${form.entranceTest === test ? '#00c9a7' : '#2a2a3a'}`,
                         background: form.entranceTest === test ? 'rgba(0,201,167,0.06)' : '#0e0e1c',
                         color: form.entranceTest === test ? '#00c9a7' : '#5a5a7a',
-                        minWidth: '45%',
                         flex: '1 1 45%',
-                      }}
-                    >
+                      }}>
                       <input
                         type="radio"
                         name="entranceTest"
@@ -484,57 +463,37 @@ export default function Home() {
                   ))}
                 </div>
               </div>
-              <div style={{ marginBottom: 24 }}>
-                <div style={{ marginBottom: 24 }}>
-                  <label style={{
-                    display: 'block',
-                    fontSize: 11,
-                    fontWeight: 600,
-                    letterSpacing: '0.12em',
-                    textTransform: 'uppercase',
-                    color: '#5a5a7a',
-                    marginBottom: 10,
-                    fontFamily: 'var(--font-mono)',
-                  }}>
-                    Program *
-                  </label>
 
-                  <div className="type-grid">
-                    {[
-                      'B.Tech',
-                      'M.Tech',
-                      'BCA',
-                      'MCA',
-                      'BBA',
-                      'MBA'
-                    ].map((prog) => (
-                      <label
-                        key={prog}
-                        className="type-option"
-                        style={{
-                          border: `2px solid ${form.program === prog ? '#00c9a7' : '#2a2a3a'}`,
-                          background: form.program === prog ? 'rgba(0,201,167,0.06)' : '#0e0e1c',
-                          color: form.program === prog ? '#00c9a7' : '#5a5a7a',
-                        }}
-                      >
-                        <input
-                          type="radio"
-                          name="program"
-                          value={prog}
-                          checked={form.program === prog}
-                          onChange={set('program')}
-                          style={{ display: 'none' }}
-                        />
-                        {prog}
-                      </label>
-                    ))}
-                  </div>
+              {/* Program */}
+              <div style={{ marginBottom: 24 }}>
+                <label style={labelStyle}>Program *</label>
+
+                <div className="type-grid">
+                  {['B.Tech', 'M.Tech', 'BCA', 'MCA', 'BBA', 'MBA'].map((prog) => (
+                    <label key={prog} className="type-option"
+                      style={{
+                        border: `2px solid ${form.program === prog ? '#00c9a7' : '#2a2a3a'}`,
+                        background: form.program === prog ? 'rgba(0,201,167,0.06)' : '#0e0e1c',
+                        color: form.program === prog ? '#00c9a7' : '#5a5a7a',
+                      }}>
+                      <input
+                        type="radio"
+                        name="program"
+                        value={prog}
+                        checked={form.program === prog}
+                        onChange={set('program')}
+                        style={{ display: 'none' }}
+                      />
+                      {prog}
+                    </label>
+                  ))}
                 </div>
               </div>
 
-              <button type="submit" style={primaryBtn} className="btn-primary" disabled={loading}>
+              <button type="submit" style={primaryBtn} disabled={loading}>
                 {loading ? 'Sending OTP…' : 'Continue →'}
               </button>
+
             </form>
           )}
 
