@@ -33,13 +33,6 @@ export async function POST(request) {
   }
 }
 
-// export async function GET() {
-//   try {
-//     await connectDB();
-//     const users = await StudentCounsiling.find().sort({ createdAt: -1 });
-//     return NextResponse.json({ success: true, users });
-//   } catch (err) {
-//     console.error('fetch users error:', err);
-//     return NextResponse.json({ success: false, message: 'Server error' }, { status: 500 });
-//   }
-// }
+export async function GET() {
+  return Response.json({ ok: true, route: 'working' });
+}

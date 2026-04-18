@@ -157,7 +157,7 @@ export default function Home() {
       if (!rData.success) return showToast(rData.message, false);
 
       showToast('Registration successful!');
-      step(2)
+      setStep(2);
     } catch {
       showToast('Network error', false);
     } finally {
@@ -445,11 +445,25 @@ export default function Home() {
             <form onSubmit={sendOtp} noValidate>
 
               <Field label="Full Name *" value={form.name} onChange={set('name')} />
-              <Field label="Contact Number *" value={form.contact} onChange={set('contact')} />
+              <Field
+                label="Contact Number *"
+                value={form.contact}
+                onChange={(e) => setForm(f => ({
+                  ...f,
+                  contact: e.target.value.replace(/\D/g, '').slice(0, 10)
+                }))}
+              />
               <Field label="Alternate Contact" value={form.altContact} onChange={set('altContact')} />
-
               <Field label="Father Name *" value={form.fatherName} onChange={set('fatherName')} />
-              <Field label="Father Contact *" value={form.fatherContact} onChange={set('fatherContact')} />
+
+              <Field
+                label="FatherContact Number *"
+                value={form.fatherContact}
+                onChange={(e) => setForm(f => ({
+                  ...f,
+                  fatherContact: e.target.value.replace(/\D/g, '').slice(0, 10)
+                }))}
+              />
               <Field label="Address *" value={form.permanant_address} onChange={set('permanant_address')} />
               <Field label="Counselor Name *" value={form.counslerName} onChange={set('counslerName')} />
 

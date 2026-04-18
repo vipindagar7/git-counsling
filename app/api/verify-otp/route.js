@@ -48,3 +48,7 @@ export async function POST(request) {
         return NextResponse.json({ success: false, message: 'Server error' }, { status: 500 });
     }
 }
+
+export async function GET() {
+  return Response.json({ ok: true, route: 'working' });
+}
