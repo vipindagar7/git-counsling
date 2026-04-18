@@ -485,13 +485,6 @@ export default function Home() {
                 </div>
               </div>
               <div style={{ marginBottom: 24 }}>
-                <label style={{
-                  display: 'block', fontSize: 11, fontWeight: 600, letterSpacing: '0.12em',
-                  textTransform: 'uppercase', color: '#5a5a7a', marginBottom: 10,
-                  fontFamily: 'var(--font-mono)',
-                }}>
-                  Type *
-                </label>
                 <div style={{ marginBottom: 24 }}>
                   <label style={{
                     display: 'block',
