@@ -82,6 +82,16 @@ function Steps({ current }) {
 
 // ── Main Page ─────────────────────────────────────────────────────────────────
 export default function Home() {
+  const labelStyle = {
+    display: 'block',
+    fontSize: 11,
+    fontWeight: 600,
+    letterSpacing: '0.12em',
+    textTransform: 'uppercase',
+    color: '#5a5a7a',
+    marginBottom: 10,
+    fontFamily: 'var(--font-mono)',
+  };
   const [step, setStep] = useState(0);
   const [form, setForm] = useState({ name: '', contact: '', altContact: '', fatherName: '', fatherContact: '', program: '', permanant_address: '', counslerName: '', entranceTest: '' });
   const [otp, setOtp] = useState('');
