@@ -124,7 +124,7 @@ export default function Home() {
     try {
       const res = await fetch('/api/send-otp', {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(form),
+        body: JSON.stringify({ contact: form.contact }),
       });
       const data = await res.json();
       if (!data.success) return showToast(data.message, false);
@@ -157,9 +157,7 @@ export default function Home() {
       if (!rData.success) return showToast(rData.message, false);
 
       showToast('Registration successful!');
-      setTimeout(() => {
-        router.replace('https://docs.google.com/forms/d/e/1FAIpQLSdrQB8ABsKtAYTJjbACGtrtzwU3D2ZmAIJEsMkScQhL9k88nw/viewform');
-      }, 1000);
+      step(2)
     } catch {
       showToast('Network error', false);
     } finally {
@@ -168,7 +166,18 @@ export default function Home() {
   }
 
   function reset() {
-    setStep(0); setForm({ name: '', contact: '', altContact: '', type: 'student' });
+    setStep(0);
+    setForm({
+      name: '',
+      contact: '',
+      altContact: '',
+      fatherName: '',
+      fatherContact: '',
+      program: '',
+      permanant_address: '',
+      counslerName: '',
+      entranceTest: ''
+    });
     setOtp(''); setTimer(0); setToast({ msg: '', ok: true });
   }
 
@@ -555,7 +564,10 @@ export default function Home() {
                   ['Name', form.name],
                   ['Contact', form.contact],
                   ...(form.altContact ? [['Alt Contact', form.altContact]] : []),
-                  ['Type', form.type === 'student' ? '🎓 Student' : '👤 Other'],
+                  ['Father Name', form.fatherName],
+                  ['Father Contact', form.fatherContact],
+                  ['Program', form.program],
+                  ['Entrance Test', form.entranceTest],
                 ].map(([k, v]) => (
                   <div key={k} className="detail-row">
                     <span style={{ color: '#4a4a6a', minWidth: 90, flexShrink: 0 }}>{k}</span>
