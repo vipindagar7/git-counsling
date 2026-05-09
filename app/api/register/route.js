@@ -6,12 +6,12 @@ export async function POST(request) {
   try {
     const { name, contact, altContact, fatherName, fatherContact, program, permanant_address, counslerName, entranceTest } = await request.json();
 
-    if (!name || !contact || !fatherName || !fatherContact || !program || !permanant_address || !counslerName || !entranceTest) {
-      return NextResponse.json(
-        { success: false, message: 'All fields are required' },
-        { status: 400 }
-      );
-    }
+    // if (!name || !contact || !fatherName || !fatherContact || !program || !permanant_address || !counslerName || !entranceTest) {
+    //   return NextResponse.json(
+    //     { success: false, message: 'All fields are required' },
+    //     { status: 400 }
+    //   );
+    // }
 
     await connectDB();
 
