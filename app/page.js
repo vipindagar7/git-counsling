@@ -114,9 +114,14 @@ export default function Home() {
   }, [timer]);
 
   async function sendOtp(e) {
+    
     e?.preventDefault();
     if (!form.name.trim()) return showToast('Name is required', false);
     if (!isValidPhone(form.contact)) return showToast('Enter a valid 10-digit contact number', false);
+     if (!program) {
+    return showToast("Please select a program");
+    ;
+  }
     if (form.altContact && !isValidPhone(form.altContact))
       return showToast('Alternate contact must also be 10 digits', false);
 
