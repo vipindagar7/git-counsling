@@ -1,33 +1,55 @@
+
 'use client';
-import { useRouter } from 'next/navigation';
+
 import { useState, useRef, useEffect } from 'react';
 import OtpInput from '@/components/OtpInput';
 import Image from 'next/image';
 
 const isValidPhone = (v) => /^\d{10}$/.test(v);
 
-// ── Reusable styled input ────────────────────────────────────────────────────
+// Reusable styled input
 function Field({ label, ...props }) {
   const [focused, setFocused] = useState(false);
+
   return (
     <div style={{ marginBottom: 18 }}>
-      <label style={{
-        display: 'block', fontSize: 11, fontWeight: 600, letterSpacing: '0.12em',
-        textTransform: 'uppercase', color: focused ? '#00c9a7' : '#5a5a7a',
-        marginBottom: 7, transition: 'color .2s', fontFamily: 'var(--font-mono)',
-      }}>
+      <label
+        style={{
+          display: 'block',
+          fontSize: 11,
+          fontWeight: 600,
+          letterSpacing: '0.12em',
+          textTransform: 'uppercase',
+          color: focused ? '#00c9a7' : '#5a5a7a',
+          marginBottom: 7,
+          transition: 'color .2s',
+          fontFamily: 'var(--font-mono)',
+        }}
+      >
         {label}
       </label>
+
       <input
         {...props}
-        onFocus={(e) => { setFocused(true); props.onFocus?.(e); }}
-        onBlur={(e) => { setFocused(false); props.onBlur?.(e); }}
+        onFocus={(e) => {
+          setFocused(true);
+          props.onFocus?.(e);
+        }}
+        onBlur={(e) => {
+          setFocused(false);
+          props.onBlur?.(e);
+        }}
         style={{
-          width: '100%', padding: '13px 16px', borderRadius: 10,
+          width: '100%',
+          padding: '13px 16px',
+          borderRadius: 10,
           border: `2px solid ${focused ? '#00c9a7' : '#2a2a3a'}`,
           background: focused ? 'rgba(0,201,167,0.04)' : '#0e0e1c',
-          color: '#e8e8f0', fontSize: 15, outline: 'none',
-          boxSizing: 'border-box', fontFamily: 'var(--font-syne)',
+          color: '#e8e8f0',
+          fontSize: 15,
+          outline: 'none',
+          boxSizing: 'border-box',
+          fontFamily: 'var(--font-syne)',
           transition: 'border-color .2s, background .2s',
           boxShadow: focused ? '0 0 0 4px rgba(0,201,167,0.08)' : 'none',
           WebkitAppearance: 'none',
@@ -38,40 +60,79 @@ function Field({ label, ...props }) {
   );
 }
 
-// ── Step indicator ────────────────────────────────────────────────────────────
+// Step indicator
 function Steps({ current }) {
   const steps = ['Details', 'Verify', 'Done'];
+
   return (
-    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 0, marginBottom: 36 }}>
+    <div
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: 0,
+        marginBottom: 36,
+      }}
+    >
       {steps.map((s, i) => {
         const done = i < current;
         const active = i === current;
+
         return (
           <div key={s} style={{ display: 'flex', alignItems: 'center' }}>
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6 }}>
-              <div style={{
-                width: 32, height: 32, borderRadius: '50%',
-                background: done ? '#00c9a7' : active ? 'transparent' : '#16162a',
-                border: `2px solid ${done || active ? '#00c9a7' : '#2a2a3a'}`,
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                fontSize: 13, fontWeight: 700, color: done ? '#0a0a14' : active ? '#00c9a7' : '#3a3a5a',
-                transition: 'all .3s', fontFamily: 'var(--font-mono)',
-              }}>
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                gap: 6,
+              }}
+            >
+              <div
+                style={{
+                  width: 32,
+                  height: 32,
+                  borderRadius: '50%',
+                  background: done ? '#00c9a7' : active ? 'transparent' : '#16162a',
+                  border: `2px solid ${done || active ? '#00c9a7' : '#2a2a3a'}`,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  fontSize: 13,
+                  fontWeight: 700,
+                  color: done ? '#0a0a14' : active ? '#00c9a7' : '#3a3a5a',
+                  transition: 'all .3s',
+                  fontFamily: 'var(--font-mono)',
+                }}
+              >
                 {done ? '✓' : i + 1}
               </div>
-              <span style={{
-                fontSize: 10, letterSpacing: '0.1em', textTransform: 'uppercase',
-                color: active ? '#00c9a7' : done ? '#00c9a7aa' : '#3a3a5a',
-                fontFamily: 'var(--font-mono)',
-              }}>{s}</span>
+
+              <span
+                style={{
+                  fontSize: 10,
+                  letterSpacing: '0.1em',
+                  textTransform: 'uppercase',
+                  color: active ? '#00c9a7' : done ? '#00c9a7aa' : '#3a3a5a',
+                  fontFamily: 'var(--font-mono)',
+                }}
+              >
+                {s}
+              </span>
             </div>
+
             {i < steps.length - 1 && (
-              <div style={{
-                width: 48, height: 2, margin: '0 6px',
-                background: done ? '#00c9a7' : '#2a2a3a',
-                marginBottom: 22, transition: 'background .3s',
-                flexShrink: 0,
-              }} />
+              <div
+                style={{
+                  width: 48,
+                  height: 2,
+                  margin: '0 6px',
+                  background: done ? '#00c9a7' : '#2a2a3a',
+                  marginBottom: 22,
+                  transition: 'background .3s',
+                  flexShrink: 0,
+                }}
+              />
             )}
           </div>
         );
@@ -80,7 +141,6 @@ function Steps({ current }) {
   );
 }
 
-// ── Main Page ─────────────────────────────────────────────────────────────────
 export default function Home() {
   const labelStyle = {
     display: 'block',
@@ -92,16 +152,31 @@ export default function Home() {
     marginBottom: 10,
     fontFamily: 'var(--font-mono)',
   };
+
   const [step, setStep] = useState(0);
-  const [form, setForm] = useState({ name: '', contact: '', altContact: '', fatherName: '', fatherContact: '', program: '', permanant_address: '', counslerName: '', entranceTest: '' });
+
+  // Added scName
+  const [form, setForm] = useState({
+    scName: '',
+    name: '',
+    contact: '',
+    altContact: '',
+    fatherName: '',
+    fatherContact: '',
+    program: '',
+    permanant_address: '',
+    counslerName: '',
+    entranceTest: '',
+  });
+
   const [otp, setOtp] = useState('');
   const [timer, setTimer] = useState(0);
   const [loading, setLoading] = useState(false);
   const [toast, setToast] = useState({ msg: '', ok: true });
   const timerRef = useRef(null);
-  const router = useRouter();
 
-  const set = (k) => (e) => setForm((f) => ({ ...f, [k]: e.target.value }));
+  const set = (k) => (e) =>
+    setForm((f) => ({ ...f, [k]: e.target.value }));
 
   const showToast = (msg, ok = true) => {
     setToast({ msg, ok });
@@ -109,32 +184,79 @@ export default function Home() {
   };
 
   useEffect(() => {
-    if (timer > 0) timerRef.current = setTimeout(() => setTimer((t) => t - 1), 1000);
+    if (timer > 0) {
+      timerRef.current = setTimeout(() => setTimer((t) => t - 1), 1000);
+    }
+
     return () => clearTimeout(timerRef.current);
   }, [timer]);
 
   async function sendOtp(e) {
-    
     e?.preventDefault();
-    if (!form.name.trim()) return showToast('Name is required', false);
-    if (!isValidPhone(form.contact)) return showToast('Enter a valid 10-digit contact number', false);
-     if (!program) {
-    return showToast("Please select a program");
-    ;
-  }
-    if (form.altContact && !isValidPhone(form.altContact))
+
+    if (!form.scName.trim()) {
+      return showToast('SC Name is required', false);
+    }
+
+    if (!form.name.trim()) {
+      return showToast('Name is required', false);
+    }
+
+    if (!isValidPhone(form.contact)) {
+      return showToast('Enter a valid 10-digit contact number', false);
+    }
+
+    if (!form.program) {
+      return showToast('Please select a program', false);
+    }
+
+    if (form.altContact && !isValidPhone(form.altContact)) {
       return showToast('Alternate contact must also be 10 digits', false);
+    }
+
+    if (!form.fatherName.trim()) {
+      return showToast('Father name is required', false);
+    }
+
+    if (!isValidPhone(form.fatherContact)) {
+      return showToast('Enter a valid 10-digit father contact number', false);
+    }
+
+    if (!form.permanant_address.trim()) {
+      return showToast('Address is required', false);
+    }
+
+    if (!form.counslerName.trim()) {
+      return showToast('Counselor name is required', false);
+    }
+
+    if (!form.entranceTest) {
+      return showToast('Please select an entrance test', false);
+    }
 
     setLoading(true);
+
     try {
       const res = await fetch('/api/send-otp', {
-        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ contact: form.contact }),
       });
+
       const data = await res.json();
-      if (!data.success) return showToast(data.message, false);
-      showToast(`OTP sent to ${form.contact}${data.otp_dev ? ' | DEV OTP: ' + data.otp_dev : ''}`);
-      setStep(1); setTimer(60);
+
+      if (!data.success) {
+        return showToast(data.message, false);
+      }
+
+      showToast(
+        `OTP sent to ${form.contact}${
+          data.otp_dev ? ' | DEV OTP: ' + data.otp_dev : ''
+        }`
+      );
+
+      setStep(1);
+      setTimer(60);
     } catch {
       showToast('Network error — is MongoDB running?', false);
     } finally {
@@ -144,26 +266,42 @@ export default function Home() {
 
   async function verifyAndRegister(e) {
     e?.preventDefault();
-    if (otp.length !== 6) return showToast('Enter the complete 6-digit OTP', false);
+
+    if (otp.length !== 6) {
+      return showToast('Enter the complete 6-digit OTP', false);
+    }
+
     setLoading(true);
+
     try {
       const vRes = await fetch('/api/verify-otp', {
-        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ contact: form.contact, otp }),
       });
+
       const vData = await vRes.json();
-      if (!vData.success) return showToast(vData.message, false);
+
+      if (!vData.success) {
+        return showToast(vData.message, false);
+      }
 
       const rRes = await fetch('/api/register', {
-        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(form),
       });
+
       const rData = await rRes.json();
-      if (!rData.success) return showToast(rData.message, false);
+
+      if (!rData.success) {
+        return showToast(rData.message, false);
+      }
 
       showToast('Registration successful!');
       setStep(2);
-    } catch {
+    } catch (err) {
+      console.error('Registration error:', err);
       showToast('Network error', false);
     } finally {
       setLoading(false);
@@ -172,7 +310,9 @@ export default function Home() {
 
   function reset() {
     setStep(0);
+
     setForm({
+      scName: '',
       name: '',
       contact: '',
       altContact: '',
@@ -181,24 +321,39 @@ export default function Home() {
       program: '',
       permanant_address: '',
       counslerName: '',
-      entranceTest: ''
+      entranceTest: '',
     });
-    setOtp(''); setTimer(0); setToast({ msg: '', ok: true });
+
+    setOtp('');
+    setTimer(0);
+    setToast({ msg: '', ok: true });
   }
 
   const primaryBtn = {
-    width: '100%', padding: '14px', borderRadius: 12, border: 'none',
+    width: '100%',
+    padding: '14px',
+    borderRadius: 12,
+    border: 'none',
     background: 'linear-gradient(135deg, #00c9a7, #00a085)',
-    color: '#0a0a14', fontSize: 15, fontWeight: 700,
-    cursor: loading ? 'not-allowed' : 'pointer', opacity: loading ? 0.6 : 1,
-    fontFamily: 'var(--font-syne)', letterSpacing: '0.03em',
-    marginTop: 8, transition: 'opacity .2s, transform .1s',
-    touchAction: 'manipulation', WebkitTapHighlightColor: 'transparent',
+    color: '#0a0a14',
+    fontSize: 15,
+    fontWeight: 700,
+    cursor: loading ? 'not-allowed' : 'pointer',
+    opacity: loading ? 0.6 : 1,
+    fontFamily: 'var(--font-syne)',
+    letterSpacing: '0.03em',
+    marginTop: 8,
+    transition: 'opacity .2s, transform .1s',
+    touchAction: 'manipulation',
+    WebkitTapHighlightColor: 'transparent',
     minHeight: 48,
   };
+
   const ghostBtn = {
-    ...primaryBtn, background: 'transparent',
-    border: '2px solid #2a2a3a', color: '#6666aa',
+    ...primaryBtn,
+    background: 'transparent',
+    border: '2px solid #2a2a3a',
+    color: '#6666aa',
   };
 
   return (
@@ -208,27 +363,41 @@ export default function Home() {
 
         @keyframes fadeUp {
           from { opacity: 0; transform: translateY(16px); }
-          to   { opacity: 1; transform: translateY(0); }
+          to { opacity: 1; transform: translateY(0); }
         }
+
         @keyframes pulse {
           0%, 100% { box-shadow: 0 0 0 0 rgba(0,201,167,0.3); }
-          50%       { box-shadow: 0 0 0 12px rgba(0,201,167,0); }
+          50% { box-shadow: 0 0 0 12px rgba(0,201,167,0); }
         }
 
         .card-animate { animation: fadeUp 0.4s ease both; }
-        .btn-primary:hover:not(:disabled) { transform: translateY(-1px); filter: brightness(1.1); }
-        .btn-primary:active:not(:disabled) { transform: translateY(0) !important; }
-        .btn-ghost:hover:not(:disabled) { border-color: #00c9a7 !important; color: #00c9a7 !important; }
+
+        .btn-primary:hover:not(:disabled) {
+          transform: translateY(-1px);
+          filter: brightness(1.1);
+        }
+
+        .btn-primary:active:not(:disabled) {
+          transform: translateY(0) !important;
+        }
+
+        .btn-ghost:hover:not(:disabled) {
+          border-color: #00c9a7 !important;
+          color: #00c9a7 !important;
+        }
 
         input::placeholder { color: #3a3a5a; }
+
         input[type="number"]::-webkit-inner-spin-button,
-        input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; }
+        input[type="number"]::-webkit-outer-spin-button {
+          -webkit-appearance: none;
+        }
 
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: #0a0a14; }
         ::-webkit-scrollbar-thumb { background: #2a2a3a; border-radius: 3px; }
 
-        /* ── Card ── */
         .reg-card {
           width: 100%;
           max-width: 440px;
@@ -239,7 +408,6 @@ export default function Home() {
           box-shadow: 0 24px 80px rgba(0,0,0,0.6);
         }
 
-        /* ── Brand ── */
         .brand-wrap {
           margin-bottom: 28px;
           text-align: center;
@@ -247,6 +415,7 @@ export default function Home() {
           max-width: 440px;
           padding: 0 4px;
         }
+
         .brand-title {
           color: #e8e8f0;
           font-size: 22px;
@@ -256,11 +425,8 @@ export default function Home() {
           line-height: 1.3;
         }
 
-        /* ── Type radio grid ── */
-        .type-grid {
-          display: flex;
-          gap: 12px;
-        }
+        .type-grid { display: flex; gap: 12px; }
+
         .type-option {
           flex: 1;
           display: flex;
@@ -278,18 +444,8 @@ export default function Home() {
           min-height: 48px;
         }
 
-        /* ── Success detail rows ── */
-        .detail-row {
-          display: flex;
-          gap: 12px;
-          margin-bottom: 8px;
-        }
+        .detail-row { display: flex; gap: 12px; margin-bottom: 8px; }
 
-        /* ════════════════════════════
-           BREAKPOINTS
-        ════════════════════════════ */
-
-        /* Tiny phones ≤ 360px */
         @media (max-width: 360px) {
           .reg-card { padding: 22px 14px; border-radius: 14px; }
           .brand-title { font-size: 15px; }
@@ -299,7 +455,6 @@ export default function Home() {
           .brand-wrap { padding: 0 14px; }
         }
 
-        /* Small phones 361–480px */
         @media (min-width: 361px) and (max-width: 480px) {
           .reg-card {
             padding: 26px 18px;
@@ -308,12 +463,14 @@ export default function Home() {
             border-right: none;
             max-width: 100%;
           }
-          .outer-wrap { padding: 28px 0 40px !important; align-items: flex-start !important; }
+          .outer-wrap {
+            padding: 28px 0 40px !important;
+            align-items: flex-start !important;
+          }
           .brand-wrap { padding: 0 18px; max-width: 100%; }
           .brand-title { font-size: 18px; }
         }
 
-        /* Mid phones 481–600px */
         @media (min-width: 481px) and (max-width: 600px) {
           .reg-card {
             padding: 30px 24px;
@@ -321,23 +478,25 @@ export default function Home() {
             max-width: 100%;
             margin: 0 16px;
           }
-          .outer-wrap { padding: 30px 0 40px !important; align-items: flex-start !important; }
+          .outer-wrap {
+            padding: 30px 0 40px !important;
+            align-items: flex-start !important;
+          }
           .brand-wrap { max-width: 100%; padding: 0 16px; }
           .brand-title { font-size: 19px; }
         }
 
-        /* Tablets 601–900px */
         @media (min-width: 601px) and (max-width: 900px) {
           .reg-card { padding: 32px 28px; }
           .brand-title { font-size: 20px; }
         }
 
-        /* Large screens */
         @media (min-width: 1200px) {
           .reg-card { max-width: 480px; padding: 40px 36px; }
           .brand-wrap { max-width: 480px; }
         }
       `}</style>
+
       <div
         className="outer-wrap"
         style={{
@@ -352,11 +511,11 @@ export default function Home() {
           fontFamily: 'var(--font-syne)',
         }}
       >
-
-        {/* ── Brand ── */}
-        <div className="brand-wrap" style={{ textAlign: 'center', width: '100%', maxWidth: 500 }}>
-
-          {/* Logo Container */}
+        {/* Brand */}
+        <div
+          className="brand-wrap"
+          style={{ textAlign: 'center', width: '100%', maxWidth: 500 }}
+        >
           <div
             style={{
               width: '100%',
@@ -372,8 +531,6 @@ export default function Home() {
             }}
           >
             <div className="flex items-around w-[100%] justify-around gap-4 sm:gap-6 md:gap-8 flex-wrap">
-
-              {/* EIT Logo */}
               <span className="bg-white rounded-lg p-2 flex items-center justify-center">
                 <Image
                   src="/Black-Logo.webp"
@@ -385,7 +542,6 @@ export default function Home() {
                 />
               </span>
 
-              {/* GGSIPU Logo */}
               <span className="bg-white rounded-lg p-2 flex items-center justify-center">
                 <Image
                   src="/GGSIPU-Black.png"
@@ -395,11 +551,9 @@ export default function Home() {
                   className="w-12 sm:w-16 md:w-20 h-auto object-contain"
                 />
               </span>
-
             </div>
           </div>
 
-          {/* Title */}
           <h1
             className="brand-title"
             style={{
@@ -412,7 +566,6 @@ export default function Home() {
             Echelon Institute of Technology
           </h1>
 
-          {/* Subtitle */}
           <p
             style={{
               color: '#4a4a6a',
@@ -423,54 +576,104 @@ export default function Home() {
           >
             OTP-verified registration
           </p>
-
         </div>
 
-        {/* ── Card ── */}
+        {/* Card */}
         <div key={step} className="reg-card card-animate">
-
           <Steps current={step} />
 
-          {/* Toast */}
           {toast.msg && (
-            <div style={{
-              background: toast.ok ? 'rgba(0,201,167,0.08)' : 'rgba(255,80,80,0.08)',
-              color: toast.ok ? '#00c9a7' : '#ff6060',
-              border: `1px solid ${toast.ok ? 'rgba(0,201,167,0.25)' : 'rgba(255,80,80,0.25)'}`,
-              borderRadius: 10, padding: '10px 14px', fontSize: 13,
-              marginBottom: 20, fontFamily: 'var(--font-mono)', lineHeight: 1.5,
-              animation: 'fadeUp .25s ease both', wordBreak: 'break-word',
-            }}>
-              {toast.ok ? '✓ ' : '✗ '}{toast.msg}
+            <div
+              style={{
+                background: toast.ok
+                  ? 'rgba(0,201,167,0.08)'
+                  : 'rgba(255,80,80,0.08)',
+                color: toast.ok ? '#00c9a7' : '#ff6060',
+                border: `1px solid ${
+                  toast.ok
+                    ? 'rgba(0,201,167,0.25)'
+                    : 'rgba(255,80,80,0.25)'
+                }`,
+                borderRadius: 10,
+                padding: '10px 14px',
+                fontSize: 13,
+                marginBottom: 20,
+                fontFamily: 'var(--font-mono)',
+                lineHeight: 1.5,
+                animation: 'fadeUp .25s ease both',
+                wordBreak: 'break-word',
+              }}
+            >
+              {toast.ok ? '✓ ' : '✗ '}
+              {toast.msg}
             </div>
           )}
 
-          {/* ═══ STEP 0 : Form ═══════════════════════════════════════════════ */}
+          {/* Step 0: Details */}
           {step === 0 && (
             <form onSubmit={sendOtp} noValidate>
+              <Field
+                label="SC Name *"
+                value={form.scName}
+                onChange={set('scName')}
+              />
 
-              <Field label="Full Name *" value={form.name} onChange={set('name')} />
+              <Field
+                label="Full Name *"
+                value={form.name}
+                onChange={set('name')}
+              />
+
               <Field
                 label="Contact Number *"
                 value={form.contact}
-                onChange={(e) => setForm(f => ({
-                  ...f,
-                  contact: e.target.value.replace(/\D/g, '').slice(0, 10)
-                }))}
+                onChange={(e) =>
+                  setForm((f) => ({
+                    ...f,
+                    contact: e.target.value.replace(/\D/g, '').slice(0, 10),
+                  }))
+                }
               />
-              <Field label="Alternate Contact" value={form.altContact} onChange={set('altContact')} />
-              <Field label="Father Name *" value={form.fatherName} onChange={set('fatherName')} />
 
               <Field
-                label="FatherContact Number *"
-                value={form.fatherContact}
-                onChange={(e) => setForm(f => ({
-                  ...f,
-                  fatherContact: e.target.value.replace(/\D/g, '').slice(0, 10)
-                }))}
+                label="Alternate Contact"
+                value={form.altContact}
+                onChange={(e) =>
+                  setForm((f) => ({
+                    ...f,
+                    altContact: e.target.value.replace(/\D/g, '').slice(0, 10),
+                  }))
+                }
               />
-              <Field label="Address *" value={form.permanant_address} onChange={set('permanant_address')} />
-              <Field label="Counselor Name *" value={form.counslerName} onChange={set('counslerName')} />
+
+              <Field
+                label="Father Name *"
+                value={form.fatherName}
+                onChange={set('fatherName')}
+              />
+
+              <Field
+                label="Father Contact Number *"
+                value={form.fatherContact}
+                onChange={(e) =>
+                  setForm((f) => ({
+                    ...f,
+                    fatherContact: e.target.value.replace(/\D/g, '').slice(0, 10),
+                  }))
+                }
+              />
+
+              <Field
+                label="Address *"
+                value={form.permanant_address}
+                onChange={set('permanant_address')}
+              />
+
+              <Field
+                label="Counselor Name *"
+                value={form.counslerName}
+                onChange={set('counslerName')}
+              />
 
               {/* Entrance Test */}
               <div style={{ marginBottom: 24 }}>
@@ -478,16 +681,30 @@ export default function Home() {
 
                 <div className="type-grid" style={{ flexWrap: 'wrap' }}>
                   {[
-                    'CET', 'CUET', 'NIMCET', 'JEE Mains',
-                    'GATE', 'CMAT - 2026', 'CAT - 2025'
+                    'CET',
+                    'CUET',
+                    'NIMCET',
+                    'JEE Mains',
+                    'GATE',
+                    'CMAT - 2026',
+                    'CAT - 2025',
                   ].map((test) => (
-                    <label key={test} className="type-option"
+                    <label
+                      key={test}
+                      className="type-option"
                       style={{
-                        border: `2px solid ${form.entranceTest === test ? '#00c9a7' : '#2a2a3a'}`,
-                        background: form.entranceTest === test ? 'rgba(0,201,167,0.06)' : '#0e0e1c',
-                        color: form.entranceTest === test ? '#00c9a7' : '#5a5a7a',
+                        border: `2px solid ${
+                          form.entranceTest === test ? '#00c9a7' : '#2a2a3a'
+                        }`,
+                        background:
+                          form.entranceTest === test
+                            ? 'rgba(0,201,167,0.06)'
+                            : '#0e0e1c',
+                        color:
+                          form.entranceTest === test ? '#00c9a7' : '#5a5a7a',
                         flex: '1 1 45%',
-                      }}>
+                      }}
+                    >
                       <input
                         type="radio"
                         name="entranceTest"
@@ -506,104 +723,200 @@ export default function Home() {
               <div style={{ marginBottom: 24 }}>
                 <label style={labelStyle}>Program *</label>
 
-                <div className="type-grid">
-                  {['B.Tech', 'M.Tech', 'BCA', 'MCA', 'BBA', 'MBA'].map((prog) => (
-                    <label key={prog} className="type-option"
-                      style={{
-                        border: `2px solid ${form.program === prog ? '#00c9a7' : '#2a2a3a'}`,
-                        background: form.program === prog ? 'rgba(0,201,167,0.06)' : '#0e0e1c',
-                        color: form.program === prog ? '#00c9a7' : '#5a5a7a',
-                      }}>
-                      <input
-                        type="radio"
-                        name="program"
-                        value={prog}
-                        checked={form.program === prog}
-                        onChange={set('program')}
-                        style={{ display: 'none' }}
-                      />
-                      {prog}
-                    </label>
-                  ))}
+                <div className="type-grid" style={{ flexWrap: 'wrap' }}>
+                  {['B.Tech', 'M.Tech', 'BCA', 'MCA', 'BBA', 'MBA'].map(
+                    (prog) => (
+                      <label
+                        key={prog}
+                        className="type-option"
+                        style={{
+                          border: `2px solid ${
+                            form.program === prog ? '#00c9a7' : '#2a2a3a'
+                          }`,
+                          background:
+                            form.program === prog
+                              ? 'rgba(0,201,167,0.06)'
+                              : '#0e0e1c',
+                          color:
+                            form.program === prog ? '#00c9a7' : '#5a5a7a',
+                        }}
+                      >
+                        <input
+                          type="radio"
+                          name="program"
+                          value={prog}
+                          checked={form.program === prog}
+                          onChange={set('program')}
+                          style={{ display: 'none' }}
+                        />
+                        {prog}
+                      </label>
+                    )
+                  )}
                 </div>
               </div>
 
               <button type="submit" style={primaryBtn} disabled={loading}>
                 {loading ? 'Sending OTP…' : 'Continue →'}
               </button>
-
             </form>
           )}
 
-          {/* ═══ STEP 1 : OTP ════════════════════════════════════════════════ */}
+          {/* Step 1: OTP */}
           {step === 1 && (
             <form onSubmit={verifyAndRegister} noValidate>
-              <p style={{ textAlign: 'center', color: '#5a5a7a', fontSize: 14, margin: '0 0 4px', fontFamily: 'var(--font-mono)' }}>
+              <p
+                style={{
+                  textAlign: 'center',
+                  color: '#5a5a7a',
+                  fontSize: 14,
+                  margin: '0 0 4px',
+                  fontFamily: 'var(--font-mono)',
+                }}
+              >
                 Enter the 6-digit code sent to
               </p>
-              <p style={{ textAlign: 'center', color: '#00c9a7', fontSize: 16, fontWeight: 700, margin: '0 0 4px', fontFamily: 'var(--font-mono)', wordBreak: 'break-all' }}>
+
+              <p
+                style={{
+                  textAlign: 'center',
+                  color: '#00c9a7',
+                  fontSize: 16,
+                  fontWeight: 700,
+                  margin: '0 0 4px',
+                  fontFamily: 'var(--font-mono)',
+                  wordBreak: 'break-all',
+                }}
+              >
                 +91 {form.contact}
               </p>
 
               <OtpInput value={otp} onChange={setOtp} />
 
-              <button type="submit" style={primaryBtn} className="btn-primary"
-                disabled={loading || otp.length < 6}>
+              <button
+                type="submit"
+                style={primaryBtn}
+                className="btn-primary"
+                disabled={loading || otp.length < 6}
+              >
                 {loading ? 'Verifying…' : 'Verify & Register'}
               </button>
 
-              <button type="button" className="btn-ghost" style={{ ...ghostBtn, marginTop: 10 }}
-                disabled={timer > 0}
-                onClick={async () => { setOtp(''); await sendOtp(); }}>
+              <button
+                type="button"
+                className="btn-ghost"
+                style={{ ...ghostBtn, marginTop: 10 }}
+                disabled={timer > 0 || loading}
+                onClick={async () => {
+                  setOtp('');
+                  await sendOtp();
+                }}
+              >
                 {timer > 0 ? `Resend OTP in ${timer}s` : '↺ Resend OTP'}
               </button>
 
-              <button type="button" className="btn-ghost" style={{ ...ghostBtn, marginTop: 10 }}
-                onClick={reset}>
+              <button
+                type="button"
+                className="btn-ghost"
+                style={{ ...ghostBtn, marginTop: 10 }}
+                onClick={reset}
+              >
                 ← Back
               </button>
             </form>
           )}
 
-          {/* ═══ STEP 2 : Success ════════════════════════════════════════════ */}
+          {/* Step 2: Success */}
           {step === 2 && (
             <div style={{ textAlign: 'center' }}>
-              <div style={{ fontSize: 56, marginBottom: 12, animation: 'pulse 2s ease-in-out infinite' }}>✅</div>
-              <h2 style={{ color: '#e8e8f0', margin: '0 0 6px', fontWeight: 800 }}>Registered!</h2>
-              <p style={{ color: '#5a5a7a', fontSize: 13, fontFamily: 'var(--font-mono)', marginBottom: 24 }}>
+              <div
+                style={{
+                  fontSize: 56,
+                  marginBottom: 12,
+                  animation: 'pulse 2s ease-in-out infinite',
+                }}
+              >
+                ✅
+              </div>
+
+              <h2
+                style={{
+                  color: '#e8e8f0',
+                  margin: '0 0 6px',
+                  fontWeight: 800,
+                }}
+              >
+                Registered!
+              </h2>
+
+              <p
+                style={{
+                  color: '#5a5a7a',
+                  fontSize: 13,
+                  fontFamily: 'var(--font-mono)',
+                  marginBottom: 24,
+                }}
+              >
                 Your details have been saved securely.
               </p>
 
-              <div style={{
-                background: '#0a0a14', border: '1px solid #1e1e30',
-                borderRadius: 12, padding: '16px 20px', textAlign: 'left',
-                marginBottom: 20, fontFamily: 'var(--font-mono)', fontSize: 13,
-              }}>
+              <div
+                style={{
+                  background: '#0a0a14',
+                  border: '1px solid #1e1e30',
+                  borderRadius: 12,
+                  padding: '16px 20px',
+                  textAlign: 'left',
+                  marginBottom: 20,
+                  fontFamily: 'var(--font-mono)',
+                  fontSize: 13,
+                }}
+              >
                 {[
+                  ['SC Name', form.scName],
                   ['Name', form.name],
                   ['Contact', form.contact],
-                  ...(form.altContact ? [['Alt Contact', form.altContact]] : []),
+                  ...(form.altContact
+                    ? [['Alt Contact', form.altContact]]
+                    : []),
                   ['Father Name', form.fatherName],
                   ['Father Contact', form.fatherContact],
                   ['Program', form.program],
                   ['Entrance Test', form.entranceTest],
                 ].map(([k, v]) => (
                   <div key={k} className="detail-row">
-                    <span style={{ color: '#4a4a6a', minWidth: 90, flexShrink: 0 }}>{k}</span>
-                    <span style={{ color: '#00c9a7', wordBreak: 'break-all' }}>{v}</span>
+                    <span
+                      style={{
+                        color: '#4a4a6a',
+                        minWidth: 90,
+                        flexShrink: 0,
+                      }}
+                    >
+                      {k}
+                    </span>
+                    <span
+                      style={{
+                        color: '#00c9a7',
+                        wordBreak: 'break-all',
+                      }}
+                    >
+                      {v}
+                    </span>
                   </div>
                 ))}
               </div>
 
-              <button style={primaryBtn} className="btn-primary" onClick={reset}>
+              <button
+                style={primaryBtn}
+                className="btn-primary"
+                onClick={reset}
+              >
                 + Register Another
               </button>
             </div>
           )}
         </div>
-      </div >
+      </div>
     </div>
-
-
   );
 }
