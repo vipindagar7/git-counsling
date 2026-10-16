@@ -1,4 +1,3 @@
-
 import { NextResponse } from 'next/server';
 import { connectDB } from '@/lib/db';
 import { StudentCounsiling } from '@/lib/models';
@@ -6,7 +5,6 @@ import { StudentCounsiling } from '@/lib/models';
 export async function POST(request) {
   try {
     const {
-      scName,
       name,
       contact,
       altContact,
@@ -18,31 +16,9 @@ export async function POST(request) {
       entranceTest
     } = await request.json();
 
-    // Validate required fields
-    if (
-      !scName ||
-      !name ||
-      !contact ||
-      !fatherName ||
-      !fatherContact ||
-      !program ||
-      !permanant_address ||
-      !counslerName ||
-      !entranceTest
-    ) {
-      return NextResponse.json(
-        {
-          success: false,
-          message: 'All required fields must be provided.'
-        },
-        { status: 400 }
-      );
-    }
-
     await connectDB();
 
     const user = await StudentCounsiling.create({
-      scName,
       name,
       contact,
       altContact,
@@ -73,16 +49,6 @@ export async function POST(request) {
       );
     }
 
-    if (err.name === 'ValidationError') {
-      return NextResponse.json(
-        {
-          success: false,
-          message: err.message
-        },
-        { status: 400 }
-      );
-    }
-
     console.error('register error:', err);
 
     return NextResponse.json(
@@ -93,8 +59,5 @@ export async function POST(request) {
 }
 
 export async function GET() {
-  return NextResponse.json({
-    ok: true,
-    route: 'working'
-  });
+  return Response.json({ ok: true, route: 'working' });
 }

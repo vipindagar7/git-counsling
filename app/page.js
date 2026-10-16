@@ -194,9 +194,6 @@ export default function Home() {
   async function sendOtp(e) {
     e?.preventDefault();
 
-    if (!form.scName.trim()) {
-      return showToast('SC Name is required', false);
-    }
 
     if (!form.name.trim()) {
       return showToast('Name is required', false);
@@ -612,12 +609,7 @@ export default function Home() {
           {/* Step 0: Details */}
           {step === 0 && (
             <form onSubmit={sendOtp} noValidate>
-              <Field
-                label="SC Name *"
-                value={form.scName}
-                onChange={set('scName')}
-              />
-
+             
               <Field
                 label="Full Name *"
                 value={form.name}
